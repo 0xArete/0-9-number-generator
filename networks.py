@@ -112,7 +112,7 @@ class Generator(nn.Module):
         self.model = nn.Sequential(
             nn.Linear(1, 200),
             nn.LeakyReLU(0.02),
-            nn.LayerNorm(200)
+            nn.LayerNorm(200),
             nn.Linear(200, 784),
             nn.Sigmoid()
             )
