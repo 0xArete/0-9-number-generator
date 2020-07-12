@@ -90,7 +90,8 @@ class Discriminator(nn.Module):
 
         # Timestamp
         self.counter += 1
-        self.progress.append(loss.item())
+        if self.counter % 10 == 0:
+            self.progress.append(loss.item())
 
 
     def plot_progress(self):
@@ -98,7 +99,7 @@ class Discriminator(nn.Module):
         Plot loss of NN for every image it was trained
         """
         df = pd.DataFrame(self.progress, columns=["loss"])
-        df.plot(ylim=(0, 1.0), figsize=(16, 8), alpha=0.1, marker=".", grid=True, yticks=(0, 0.25, 0.5))
+        df.plot(ylim=(0), figsize=(16, 8), alpha=0.1, marker=".", grid=True, yticks=(0, 0.25, 0.5, 0.1, 5.0))
 
 
 class Generator(nn.Module):
@@ -110,7 +111,7 @@ class Generator(nn.Module):
 
         # Neural Network layers
         self.model = nn.Sequential(
-            nn.Linear(1, 200),
+            nn.Linear(100, 200),
             nn.LeakyReLU(0.02),
             nn.LayerNorm(200),
             nn.Linear(200, 784),
@@ -119,7 +120,7 @@ class Generator(nn.Module):
 
         # No loss function; will use one from discriminator to calculate error
 
-        self.optimiser = torch.optim.Adam(self.parameters(), lr=0.01)
+        self.optimiser = torch.optim.Adam(self.parameters(), lr=0.0001)
 
         # Timestap of loss for ploting progress
         self.progress = []
@@ -148,7 +149,8 @@ class Generator(nn.Module):
         self.optimiser.step()
 
         self.counter += 1
-        self.progress.append(loss.item())
+        if self.counter % 10 == 0:
+            self.progress.append(loss.item())
 
     def plot_progress(self):
         """
@@ -163,4 +165,4 @@ class Generator(nn.Module):
         # plt.show()
         
         df = pd.DataFrame(self.progress, columns=["loss"])
-        df.plot(ylim=(0, 1.0), figsize=(16, 8), alpha=0.1, marker=".", grid=True, yticks=(0, 0.25, 0.5))
+        df.plot(ylim=(0), figsize=(16, 8), alpha=0.1, marker=".", grid=True, yticks=(0, 0.25, 0.5, 0.1, 5.0))
