@@ -90,7 +90,7 @@ class Discriminator(nn.Module):
 
         # Timestamp
         self.counter += 1
-        if self.counter % 10 == 0:
+        if self.counter % 100 == 0:
             self.progress.append(loss.item())
 
 
@@ -108,7 +108,8 @@ class Generator(nn.Module):
         """
         Create structure of NN
         """
-
+        # Only for convinienct in main.py
+        self.input_size = 100
         # Neural Network layers
         self.model = nn.Sequential(
             nn.Linear(100, 200),
@@ -149,7 +150,7 @@ class Generator(nn.Module):
         self.optimiser.step()
 
         self.counter += 1
-        if self.counter % 10 == 0:
+        if self.counter % 100 == 0:
             self.progress.append(loss.item())
 
     def plot_progress(self):
