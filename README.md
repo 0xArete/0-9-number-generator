@@ -28,7 +28,7 @@ Job of Discriminator is to recognize if it is real image or fake one produced by
 
 So Generator and Discriminator have competation, where G wants to generate fake data and outwit Discriminator and Discriminator try to guess, if it is from Generator or from real MNIST dataset. After that we can take generator, which learned to generate 28x28 digits like from MNIST.
 
-In my case after 8 epochs on 60000 training MNIST dataset I git something like this:
+In my case after 8 epochs on 60000 training MNIST dataset I get something like this:
 ![digit 2020-07-13 18-06-25](https://user-images.githubusercontent.com/57571014/87326958-ba6e0d80-c533-11ea-9889-a7cceaf5126d.png)
 
 Also we can generate random seeds and deduce them or add them together. It's also in that picture (up). Pentultimate in first and second rows are *seed1* and *seed2* (pytorch.randn(100)). The last one in first row and second row is *seed1-seed2* and *seed1+seed2*.
