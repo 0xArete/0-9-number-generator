@@ -36,7 +36,7 @@ Also we can generate random seeds and deduce them or add them together. It's als
 With GAN you have to be aware of mode collapse, where generator would output still one digit. From what I have found it's not clear why it happens, but the quality (of NN structure) and quantity (of training) plays big role.
 
 
-## **Network Structure**\
+## **Network Structure**
 For Discriminator I used 784 input layer (mnist 28x28=784 image) to 200; LeakyReLU(0.02); Layer Normalisation of 200 (cram in to 0 to 1), Sigmoid (200) to 1 -> because we want only one output 1.0 (it is from MNIST) or 0.0 (it is from Generator).
 
 For Generator I mirrored it; except input layer -> It is random seed of 100 (pytorch.randn(100)).
@@ -44,5 +44,5 @@ For Generator I mirrored it; except input layer -> It is random seed of 100 (pyt
 As optimiser I used Adam for both networks (gives that "rolling ball" on gradient descent velocity) and as Loss function I used BCELoss, because it is better for classification (I gave it only to Discriminator; Generator use one from Discriminator)
 
 
-## **Note**\
+## **Note**
 I am suprised how well this project turned out; I wasn't expecting any results like that. I did use framework, but this time I knew what I was doing (thanks to my previous project Number guesser, which I did without framework) and later it would be benefiting use one (Mainly pytorch; it's not as easy for beginners like Keras, where beginner can make NN and still not understand what he has done and pytorch is lighweight framework and pythonic; so it is good choice). There aren't many great resources on neural networks or on pytorch, but I can recommend Tariq Rashid or Sentdex.
