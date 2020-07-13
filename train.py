@@ -87,6 +87,6 @@ try:
     plot_networks_outputs()
 except:
     print("Couldn't print plots.\nProbably small range of training.")
-#save_model()
+save_model()
 
 print("Training is done and model is saved.")
