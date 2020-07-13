@@ -8,7 +8,7 @@
 - Pandas
 - Matplotlib
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/57571014/87323204-c0152480-c52e-11ea-8f89-9173b62c131a.gif)
+![ezgif com-gif-maker2](https://user-images.githubusercontent.com/57571014/87329620-85fc5080-c537-11ea-9118-cef122809059.gif)
 
 **How GAN works?**
 
