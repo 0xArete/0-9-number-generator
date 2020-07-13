@@ -22,7 +22,7 @@ In loop of training:
 At the beginnig Generator output something like this:
 ![withou training](https://user-images.githubusercontent.com/57571014/87323939-b6d88780-c52f-11ea-9b77-daa07d1211f6.png)
 
-Because it get random seed (in my case: pytorch.randn(100)) and it is not trained yet. But everytime he can't outwit Discriminator, which is trained on real images of mnist dataset, it will backpropagate and learn how to generate images similiar to mnist dataset.
+Because it get random seed (in my case: pytorch.randn(100)) and it is not trained yet. But everytime he can't outwit Discriminator, which is trained on real images of mnist dataset, it will backpropagate and learn how to generate images similiar to mnist dataset in order to fool Discriminator.
 
 Job of Discriminator is to recognize if it is real image or fake one produced by generator. If Discriminator think it is real image; it will output 1.0 else 0.0. And everytime it guessed wrong; it will backpropagate.
 
