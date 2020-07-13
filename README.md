@@ -2,7 +2,7 @@
 
 **GAN (Generative adversarial network) -> Generating Numbers**
 ----------------------------
-**Third-party modules:**
+##**Third-party modules:**
 - Pytorch
 - Numpy
 - Matplotlib
