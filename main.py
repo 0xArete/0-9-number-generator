@@ -1,52 +1,76 @@
 import torch
-from numpy import random
+import tkinter as tk
 import matplotlib.pyplot as plt
-
-import networks
-
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-path = "mnist_dataset/mnist_train.cvs"
-dataset = networks.MnistDataset(path)
-D = networks.Discriminator()
-G = networks.Generator()
-
-# def generate_random_image(i): 
-#     return torch.rand(i)
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import numpy as np
+from time import strftime, localtime
 
 def generate_random_seed(i): 
     return torch.randn(i)
 
-### TRAIN ###
-epochs = 1
-for e in range(1, epochs+1):
-    print(f"Training in {e} / {epochs} epochs...")
-    for dx, (label, img_data_tensor, target_tensor) in enumerate(dataset):
-        # 1.0 for image from real dataset; 0.0 for fake one
+def load_generator():
+    PATH = "models/generator"
+    model = torch.load(PATH)
+    return model
 
-        # train D on real/true data
-        D.train(img_data_tensor, torch.FloatTensor([1.0]))
+G = load_generator()
+g_input_layer = 100
 
-        # train D on fake/false data
-        # detach() to not calculate gradients in G (for computational cost)
-        D.train(G.forward(generate_random_seed(100)).detach(), torch.FloatTensor([0.0]))
+if __name__ == "__main__":
+    class WindowDigitGenerator():
 
-        # train G (generator)
-        G.train(D, generate_random_seed(100), torch.FloatTensor([1.0]))
+        def __init__(self):
+            self.width = 1000
+            self.height = 800
 
-        if (dx+1) % 20000 == 0:
-            print(f"Trained on {dx+1} images")
+            self.root = tk.Tk()
+            self.root.title("0-9 NUMBER GENERATOR by ludius0")
+            self.root.geometry(f"{self.width}x{self.height}")
+
+            text = "Generate digits"
+            self.button1 = tk.Button(self.root, text=text, command=self.show_digits)
+            self.button1.pack(side=tk.TOP, fill=tk.BOTH)
+
+            text = "Generate single digit"
+            self.button2 = tk.Button(self.root, text=text, command=lambda: self.show_digits(show_more_digits=False))
+            self.button2.pack(side=tk.TOP, fill=tk.BOTH)
+
+            self.button3 = tk.Button(self.root, text="Save chart", command=self.save_digits)
+            self.button3.pack(side=tk.TOP, fill=tk.BOTH)
+
+            self.first_click = True
+            self.show_digits()
+            self.root.mainloop()
 
 
+        def show_digits(self, show_more_digits=True):
+            if self.first_click == False:
+                self.canvas.get_tk_widget().destroy()
 
-D.plot_progress()
-G.plot_progress()
+            if show_more_digits == True:
+                rows = 2
+                columns = 3
 
+                fig, ax = plt.subplots(rows, columns, figsize=(16, 8))
+                for i in range(rows):
+                    for j in range(columns):
+                        output = G.forward(generate_random_seed(g_input_layer))
+                        img = output.detach().numpy().reshape(28, 28)
+                        ax[i,j].imshow(img, interpolation="none", cmap="Blues")
+            else:
+                fig, ax = plt.subplots(figsize=(16, 8))
+                output = G.forward(generate_random_seed(g_input_layer))
+                img = output.detach().numpy().reshape(28, 28)
+                ax.imshow(img, interpolation="none", cmap="Blues")
 
-fig, ax = plt.subplots(2, 3, figsize=(16, 8))
-for i in range(2):
-    for j in range(3):
-        output = G.forward(generate_random(1))
-        img = output.detach().numpy().reshape(28, 28)
-        ax[i,j].imshow(img, interpolation="none", cmap="Blues")
-plt.show()
+            self.canvas = FigureCanvasTkAgg(fig, master=self.root)
+            self.canvas.draw()
+            self.canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=1)
+
+            self.first_click = False
+
+        def save_digits(self):
+            timestamp = strftime("%Y-%m-%d %H-%M-%S", localtime())
+            plt.savefig(f"digits/digit {timestamp}.png")
+
+    app = WindowDigitGenerator()
