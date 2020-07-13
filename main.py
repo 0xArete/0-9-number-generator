@@ -49,12 +49,24 @@ if __name__ == "__main__":
 
             if show_more_digits == True:
                 rows = 2
-                columns = 3
+                columns = 4
+
+                seed1 = generate_random_seed(g_input_layer)
+                seed2 = generate_random_seed(g_input_layer)
 
                 fig, ax = plt.subplots(rows, columns, figsize=(16, 8))
                 for i in range(rows):
                     for j in range(columns):
-                        output = G.forward(generate_random_seed(g_input_layer))
+                        if i == rows-1 and j == columns:        # Last in first row (penultimate row) is seed1-seed2
+                            output = G.forward(seed1-seed2)
+                        elif i == rows and j == columns:        # Last in second row (last row) is seed1+seed2
+                            output = G.forward(seed1+seed2)
+                        elif i == rows-1 and j == columns-1:    # Penultimate in first row (penultimate row) is seed1
+                            output = G.forward(seed1)
+                        elif i == rows and j == columns-1:      # Penultimate in second row (last row) is seed2
+                            output = G.forward(seed2)
+                        else:                                   # Everyone else is random
+                            output = G.forward(generate_random_seed(g_input_layer))
                         img = output.detach().numpy().reshape(28, 28)
                         ax[i,j].imshow(img, interpolation="none", cmap="Blues")
             else:
