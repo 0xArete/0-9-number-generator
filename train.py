@@ -6,6 +6,7 @@ import networks
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+
 ### Prepare networks ###
 path = "mnist_dataset/mnist_train.cvs"
 dataset = networks.MnistDataset(path)
@@ -16,6 +17,7 @@ G = networks.Generator()
 g_input_layer = G.input_size # 100
 
 
+### FUNCTIONS ###
 def plot_networks_outputs():
     """
     Plot loss function through time and generator outputs
@@ -31,6 +33,16 @@ def plot_networks_outputs():
             ax[i,j].imshow(img, interpolation="none", cmap="Blues")
     plt.show()
 
+def plot_through_epochs(evolution, plot_size):
+    """
+    Plot Generator outputs through epochs
+    """
+    fig, ax = plt.subplots(1, plot_size+1, figsize=(16, 8))
+    for index, g_output in enumerate(evolution):
+        img = g_output.numpy().reshape(28, 28)
+        ax[index].imshow(img, interpolation="none", cmap="Blues")
+    plt.show()
+
 def save_model():
     PATH = "models/generator"
     torch.save(G, PATH)
@@ -42,6 +54,9 @@ def generate_random_seed(i):
 
 
 ### TRAIN ###
+seed1 = generate_random_seed(g_input_layer)
+evolution_through_epochs = [G.forward(seed1).detach()]
+
 epochs = 8
 for e in range(1, epochs+1):
     print(f"Training in {e} / {epochs} epochs...")
@@ -62,12 +77,16 @@ for e in range(1, epochs+1):
             print(f"Trained on {dx+1} images")
         pass
 
+    # Save progress
+    evolution_through_epochs.append(G.forward(seed1).detach())
+
 
 ### PLOT AND SAVE ###
 try:
+    plot_through_epochs(evolution_through_epochs, epochs)
     plot_networks_outputs()
 except:
     print("Couldn't print plots.\nProbably small range of training.")
-save_model()
+#save_model()
 
 print("Training is done and model is saved.")
