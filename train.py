@@ -41,6 +41,8 @@ def plot_through_epochs(evolution, plot_size):
     for index, g_output in enumerate(evolution):
         img = g_output.numpy().reshape(28, 28)
         ax[index].imshow(img, interpolation="none", cmap="Blues")
+    PATH = "digits/results after each epochs.png"
+    plt.savefig(PATH)
     plt.show()
 
 def save_model():
