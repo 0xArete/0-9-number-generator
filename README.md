@@ -43,6 +43,8 @@ For Generator I mirrored it; except input layer -> It is random seed of 100 (pyt
 
 As optimiser I used Adam for both networks (gives that "rolling ball" on gradient descent velocity) and as Loss function I used BCELoss, because it is better for classification (I gave it only to Discriminator; Generator use one from Discriminator)
 
+In my case I think I over fitted in 8 epochs. Here is my result through epochs (first one is before training).
+![progress](https://user-images.githubusercontent.com/57571014/87418688-62d2af00-c5d2-11ea-8a0d-f5bc82abfe11.png)
 
 ## **Note**
 I am suprised how well this project turned out; I wasn't expecting any results like that. I did use framework, but this time I knew what I was doing (thanks to my previous project Number guesser, which I did without framework) and later it would be benefiting use one (Mainly pytorch; it's not as easy for beginners like Keras, where beginner can make NN and still not understand what he has done and pytorch is lighweight framework and pythonic; so it is good choice). There aren't many great resources on neural networks or on pytorch, but I can recommend Tariq Rashid or Sentdex.
