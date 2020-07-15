@@ -99,7 +99,8 @@ class Discriminator(nn.Module):
         Plot loss of NN for every image it was trained
         """
         df = pd.DataFrame(self.progress, columns=["loss"])
-        df.plot(ylim=(0), figsize=(16, 8), alpha=0.1, marker=".", grid=True, yticks=(0, 0.25, 0.5, 0.1, 5.0))
+        df.plot(ylim=(0), figsize=(16, 8), alpha=0.1, marker=".", grid=True,
+                yticks=(0, 0.25, 0.5, 0.1, 5.0), title="Discriminator Loss")
 
 
 class Generator(nn.Module):
@@ -166,4 +167,5 @@ class Generator(nn.Module):
         # plt.show()
         
         df = pd.DataFrame(self.progress, columns=["loss"])
-        df.plot(ylim=(0), figsize=(16, 8), alpha=0.1, marker=".", grid=True, yticks=(0, 0.25, 0.5, 0.1, 5.0))
+        df.plot(ylim=(0), figsize=(16, 8), alpha=0.1, marker=".", grid=True, 
+                yticks=(0, 0.25, 0.5, 0.1, 5.0), title="Generator Loss")
