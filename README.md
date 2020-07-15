@@ -7,7 +7,7 @@
 - Numpy
 - Matplotlib
 - Pandas
-
+----------------------------
 ![ezgif com-gif-maker2](https://user-images.githubusercontent.com/57571014/87329620-85fc5080-c537-11ea-9118-cef122809059.gif)
 
 ## **How GAN works?**
