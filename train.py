@@ -26,6 +26,7 @@ def plot_networks_outputs():
     G.plot_progress()
 
     fig, ax = plt.subplots(2, 3, figsize=(16, 8))
+    fig.canvas.set_window_title("Generator outputs") 
     for i in range(2):
         for j in range(3):
             output = G.forward(generate_random_seed(g_input_layer))
@@ -33,17 +34,31 @@ def plot_networks_outputs():
             ax[i,j].imshow(img, interpolation="none", cmap="Blues")
     plt.show()
 
-def plot_through_epochs(evolution, plot_size):
-    """
-    Plot Generator outputs through epochs
-    """
-    fig, ax = plt.subplots(1, plot_size+1, figsize=(16, 8))
-    for index, g_output in enumerate(evolution):
-        img = g_output.numpy().reshape(28, 28)
-        ax[index].imshow(img, interpolation="none", cmap="Blues")
-    PATH = "digits/results after each epochs.png"
-    plt.savefig(PATH)
-    plt.show()
+def plot_through_epochs(evolution, plot_size, together=True):
+    if together == True:
+        """
+        Plot Generator outputs through epochs
+        """
+        fig, ax = plt.subplots(1, plot_size+1, figsize=(16, 8))
+        fig.canvas.set_window_title("Generator outputs through epochs.") 
+        for index, g_output in enumerate(evolution):
+            img = g_output.numpy().reshape(28, 28)
+            ax[index].imshow(img, interpolation="none", cmap="Blues")
+        PATH = "digits/results after each epochs.png"
+        plt.savefig(PATH)
+        plt.show()
+    else:
+        """
+        Save plots of G output in first epoch
+        """
+        fig, ax = plt.subplots(figsize=(16, 8))
+        for index, g_output in enumerate(evolution):
+            img = g_output.numpy().reshape(28, 28)
+            plt.imshow(img, interpolation="none", cmap="Blues")
+            PATH = f"digits/{index}.png"
+            plt.savefig(PATH)
+            # plt.show()
+
 
 def save_model():
     PATH = "models/generator"
@@ -77,15 +92,16 @@ for e in range(1, epochs+1):
 
         if (dx+1) % 20000 == 0:
             print(f"Trained on {dx+1} images")
+            # Save progress
+            #evolution_through_epochs.append(G.forward(seed1).detach())
         pass
-
     # Save progress
-    evolution_through_epochs.append(G.forward(seed1).detach())
+    # evolution_through_epochs.append(G.forward(seed1).detach())
 
 
 ### PLOT AND SAVE ###
 try:
-    plot_through_epochs(evolution_through_epochs, epochs)
+    plot_through_epochs(evolution_through_epochs, epochs, together=False)
     plot_networks_outputs()
 except:
     print("Couldn't print plots.\nProbably small range of training.")
