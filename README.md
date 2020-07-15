@@ -19,8 +19,8 @@ In loop of training:
 2. Discriminator is trained on fake data from generator with target **0.0**.
 3. Generator is trained if it can outwit discriminator; if not than backpropagate with loss function from discriminator.
 
-At the beginnig Generator output something like this:
-![withou training](https://user-images.githubusercontent.com/57571014/87323939-b6d88780-c52f-11ea-9b77-daa07d1211f6.png)
+At the beginnig Generator output random noise, but through training it will learn to output image similiar from MNIST:
+![ezgif com-gif-maker4](https://user-images.githubusercontent.com/57571014/87528308-a6d6ba00-c68d-11ea-940b-6a562843235a.gif)
 
 Because it get random seed (in my case: pytorch.randn(100)) and it is not trained yet. But everytime he can't outwit Discriminator, which is trained on real images of mnist dataset, it will backpropagate and learn how to generate images similiar to mnist dataset in order to fool Discriminator.
 
@@ -42,9 +42,6 @@ For Discriminator I used 784 input layer (mnist 28x28=784 image) to 200; LeakyRe
 For Generator I mirrored it; except input layer -> It is random seed of 100 (pytorch.randn(100)).
 
 As optimiser I used Adam for both networks (gives that "rolling ball" on gradient descent velocity) and as Loss function I used BCELoss, because it is better for classification (I gave it only to Discriminator; Generator use one from Discriminator)
-
-In my case I think I over fitted in 8 epochs. Here is my result through epochs (first one is before training).
-![progress](https://user-images.githubusercontent.com/57571014/87418688-62d2af00-c5d2-11ea-8a0d-f5bc82abfe11.png)
 
 ## **Note**
 I am suprised how well this project turned out; I wasn't expecting any results like that. I did use framework, but this time I knew what I was doing (thanks to my previous project Number guesser, which I did without framework) and later it would be benefiting use one (Mainly pytorch; it's not as easy for beginners like Keras, where beginner can make NN and still not understand what he has done and pytorch is lighweight framework and pythonic; so it is good choice). There aren't many great resources on neural networks or on pytorch, but I can recommend Tariq Rashid or Sentdex.
