@@ -54,7 +54,13 @@ class Discriminator(nn.Module):
             nn.Linear(784, 200),
             nn.LeakyReLU(0.02),
             nn.LayerNorm(200),
-            nn.Linear(200, 1),
+            nn.Linear(200, 150),
+            nn.LeakyReLU(0.02),
+            nn.LayerNorm(150),
+            nn.Linear(150, 100),
+            nn.LeakyReLU(0.02),
+            nn.LayerNorm(100),
+            nn.Linear(100, 1),
             nn.Sigmoid()
             )
 
@@ -113,10 +119,16 @@ class Generator(nn.Module):
         self.input_size = 100
         # Neural Network layers
         self.model = nn.Sequential(
-            nn.Linear(100, 200),
+            nn.Linear(100, 150),
+            nn.LeakyReLU(0.02),
+            nn.LayerNorm(150),
+            nn.Linear(150, 200),
             nn.LeakyReLU(0.02),
             nn.LayerNorm(200),
-            nn.Linear(200, 784),
+            nn.Linear(200, 250),
+            nn.LeakyReLU(0.02),
+            nn.LayerNorm(250),
+            nn.Linear(250, 784),
             nn.Sigmoid()
             )
 
