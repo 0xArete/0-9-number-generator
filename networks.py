@@ -41,6 +41,16 @@ class MnistDataset(Dataset):
         plt.show()
 
 
+class View(nn.Module):
+    def __init__(self, shape):
+        super().__init__()
+        """Reshape to another dimensnsion"""
+        self.shape = shape, # <- create tuple
+    
+    def forward(self, x):
+        return x.reshape(*self.shape)
+
+
 
 class Discriminator(nn.Module):
     def __init__(self):
@@ -51,18 +61,30 @@ class Discriminator(nn.Module):
 
         # Neural Network layers
         self.model = nn.Sequential(
-            nn.Linear(784, 200),
-            nn.LeakyReLU(0.02),
-            nn.LayerNorm(200),
-            nn.Linear(200, 1),
-            nn.Sigmoid()
+            View((1, 1, 28, 28)),
+            nn.Conv2d(1, 128, kernel_size=4, stride=2),
+            nn.BatchNorm2d(128),
+            nn.LeakyReLU(0.2),
+
+            nn.Conv2d(128, 256, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(256),
+            nn.LeakyReLU(0.2),
+
+            nn.Conv2d(256, 512, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(512),
+            nn.LeakyReLU(0.2),
+
+            nn.Conv2d(512, 1, kernel_size=4, stride=2, padding=1),
+            nn.Sigmoid(),
+
+            View(1)
             )
 
         # Binary cross entropy loss -> better for classification than MSELoss
         self.loss_function = nn.BCELoss()
 
         # Adam optimiser; better for this task than Stochastic gradient descent
-        self.optimiser = torch.optim.Adam(self.parameters(), lr=0.0001)
+        self.optimiser = torch.optim.Adam(self.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
         # Timestap of loss for ploting progress
         self.progress = []
@@ -113,16 +135,29 @@ class Generator(nn.Module):
         self.input_size = 100
         # Neural Network layers
         self.model = nn.Sequential(
-            nn.Linear(100, 200),
-            nn.LeakyReLU(0.02),
-            nn.LayerNorm(200),
-            nn.Linear(200, 784),
-            nn.Sigmoid()
+            # reshape to z (_, z, y, x)
+            View((1, 100, 1, 1)),
+            nn.ConvTranspose2d(100, 512, kernel_size=4, stride=1),
+            nn.BatchNorm2d(512),
+            nn.ReLU(),
+            
+            nn.ConvTranspose2d(512, 256, kernel_size=4, stride=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(),
+
+            nn.ConvTranspose2d(256, 128, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(128),
+            nn.ReLU(),
+
+            nn.ConvTranspose2d(128, 1, kernel_size=4, stride=2, padding=1),
+            nn.Tanh(),
+
+            View((28, 28))
             )
 
         # No loss function; will use one from discriminator to calculate error
 
-        self.optimiser = torch.optim.Adam(self.parameters(), lr=0.0001)
+        self.optimiser = torch.optim.Adam(self.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
         # Timestap of loss for ploting progress
         self.progress = []
@@ -158,13 +193,6 @@ class Generator(nn.Module):
         """
         Plot loss of NN for every image it was trained
         """
-
-        # x_size = [i for i in range(len(self.progress))]
-        # # Plot
-        # fig, ax = plt.subplots(figsize=(16, 8))
-        # ax.set_title("Loss over time (x=trained images, y=loss values)")
-        # ax.plot(x_size, self.progress)
-        # plt.show()
         
         df = pd.DataFrame(self.progress, columns=["loss"])
         df.plot(ylim=(0), figsize=(16, 8), alpha=0.1, marker=".", grid=True, 
