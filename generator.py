@@ -1,3 +1,6 @@
+"""
+COPY OF GENERATOR IN TRAIN_MNIST_NGAN.IPYNB
+"""
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
