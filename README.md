@@ -21,7 +21,7 @@ In loop of training:
 3. Generator is trained if it can outwit discriminator; if not than backpropagate with loss function from discriminator.
 
 At the beginnig Generator output random noise, but through training it will learn to output image similiar from MNIST:
-![through first epoch gif--previous_result--](https://user-images.githubusercontent.com/57571014/88428485-449c5880-cdf5-11ea-8633-9f5b79bfa40d.gif)
+![through first epoch gif](https://user-images.githubusercontent.com/57571014/88433211-f049a680-cdfd-11ea-8ffa-7ba9d0fd2222.gif)
 
 Because it get random seed (standard is: pytorch.randn(100)) and it is not trained yet. But everytime he can't outwit Discriminator, which is trained on real images of mnist dataset, it will backpropagate and learn how to generate images similiar to mnist dataset in order to fool Discriminator.
 
