@@ -9,8 +9,10 @@ def generate_random_seed(i):
     return torch.randn(i)
 
 def load_generator():
-    PATH = "models/generator"
-    model = torch.load(PATH)
+    import generator
+    model = generator.Generator()
+    PATH = "models/generator.pt"
+    model.load_state_dict(torch.load(PATH, map_location=torch.device('cpu')))
     return model
 
 G = load_generator()
