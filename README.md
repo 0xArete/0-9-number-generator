@@ -1,16 +1,17 @@
 ### 0-9-number-generator
 
-# **GAN (Generative adversarial network) -> Generating Numbers**
+# **CGAN (Convolutional generative adversarial network) -> Generating Numbers**
 ----------------------------
 ### **Third-party modules:**
 - Pytorch
 - Numpy
 - Matplotlib
 - Pandas
+- tqdm
 ----------------------------
-![ezgif com-gif-maker2](https://user-images.githubusercontent.com/57571014/87329620-85fc5080-c537-11ea-9118-cef122809059.gif)
+![GUI - gif](https://user-images.githubusercontent.com/57571014/88428244-d48dd280-cdf4-11ea-88bc-e1a913280540.gif)
 
-## **How GAN works?**
+## **How CGAN works?**
 
 You create two neural networks -> Discriminator and Generator. 
 
@@ -20,28 +21,28 @@ In loop of training:
 3. Generator is trained if it can outwit discriminator; if not than backpropagate with loss function from discriminator.
 
 At the beginnig Generator output random noise, but through training it will learn to output image similiar from MNIST:
-![ezgif com-gif-maker4](https://user-images.githubusercontent.com/57571014/87528308-a6d6ba00-c68d-11ea-940b-6a562843235a.gif)
+![through first epoch gif--previous_result--](https://user-images.githubusercontent.com/57571014/88428485-449c5880-cdf5-11ea-8633-9f5b79bfa40d.gif)
 
-Because it get random seed (in my case: pytorch.randn(100)) and it is not trained yet. But everytime he can't outwit Discriminator, which is trained on real images of mnist dataset, it will backpropagate and learn how to generate images similiar to mnist dataset in order to fool Discriminator.
+Because it get random seed (standard is: pytorch.randn(100)) and it is not trained yet. But everytime he can't outwit Discriminator, which is trained on real images of mnist dataset, it will backpropagate and learn how to generate images similiar to mnist dataset in order to fool Discriminator.
+
+Instead of using linear nodes I used convolutional nodes. I got better results than with GAN (you can find code in "old_master" branch).
+
+**GAN**
+![digit 2020-07-13 18-06-25](https://user-images.githubusercontent.com/57571014/87326958-ba6e0d80-c533-11ea-9889-a7cceaf5126d.png)
+
+**CGAN**
+![digit 2020-07-24 20-52-10](https://user-images.githubusercontent.com/57571014/88428580-73b2ca00-cdf5-11ea-9ce9-0b40ede98ac0.png)
+
+Also we can generate random seeds and deduce them or add them together. It's also in that picture (up). Pentultimate in first and second rows are *seed1* and *seed2*. The last one in first row and second row is *seed1-seed2* and *seed1+seed2*.
+
+**Role of discriminator and generator**
 
 Job of Discriminator is to recognize if it is real image or fake one produced by generator. If Discriminator think it is real image; it will output 1.0 else 0.0. And everytime it guessed wrong; it will backpropagate.
 
-So Generator and Discriminator have competation, where G wants to generate fake data and outwit Discriminator and Discriminator try to guess, if it is from Generator or from real MNIST dataset. After that we can take generator, which learned to generate 28x28 digits like from MNIST.
+So Generator and Discriminator have competation, where Generator wants to generate fake data and outwit Discriminator and Discriminator try to guess, if it is from Generator or from real MNIST dataset. After that we can take generator, which learned to generate 28x28 digits like from MNIST.
 
-In my case after 8 epochs on 60000 training MNIST dataset I get something like this:
-![digit 2020-07-13 18-06-25](https://user-images.githubusercontent.com/57571014/87326958-ba6e0d80-c533-11ea-9889-a7cceaf5126d.png)
+*With GAN you have to be aware of mode collapse, where generator would output still one digit. From what I have found it's not clear why it happens, but the quality (of NN structure) and quantity (of training) plays big role.*
 
-Also we can generate random seeds and deduce them or add them together. It's also in that picture (up). Pentultimate in first and second rows are *seed1* and *seed2* (pytorch.randn(100)). The last one in first row and second row is *seed1-seed2* and *seed1+seed2*.
-
-With GAN you have to be aware of mode collapse, where generator would output still one digit. From what I have found it's not clear why it happens, but the quality (of NN structure) and quantity (of training) plays big role.
-
-
-## **Network Structure**
-For Discriminator I used 784 input layer (mnist 28x28=784 image) to 200; LeakyReLU(0.02); Layer Normalisation of 200 (cram in to 0 to 1), Sigmoid (200) to 1 -> because we want only one output 1.0 (it is from MNIST) or 0.0 (it is from Generator).
-
-For Generator I mirrored it; except input layer -> It is random seed of 100 (pytorch.randn(100)).
-
-As optimiser I used Adam for both networks (gives that "rolling ball" on gradient descent velocity) and as Loss function I used BCELoss, because it is better for classification (I gave it only to Discriminator; Generator use one from Discriminator)
 
 ## **Note**
-I am suprised how well this project turned out; I wasn't expecting any results like that. I did use framework, but this time I knew what I was doing (thanks to my previous project Number guesser, which I did without framework) and later it would be benefiting use one (Mainly pytorch; it's not as easy for beginners like Keras, where beginner can make NN and still not understand what he has done and pytorch is lighweight framework and pythonic; so it is good choice). There aren't many great resources on neural networks or on pytorch, but I can recommend Tariq Rashid or Sentdex.
+I already done this project, but this time I added concvolution neural network. I think it have better result. Also I used google collabs, where they offer gpu for free (so I want thank them for that). That's reason this time the code is written in ipynb file. If you want check previous code, than go to "old_master branch".
