@@ -41,8 +41,8 @@ Job of Discriminator is to recognize if it is real image or fake one produced by
 
 So Generator and Discriminator have competation, where Generator wants to generate fake data and outwit Discriminator and Discriminator try to guess, if it is from Generator or from real MNIST dataset. After that we can take generator, which learned to generate 28x28 digits like from MNIST.
 
-*With GAN you have to be aware of mode collapse, where generator would output still one digit. From what I have found it's not clear why it happens, but the quality (of NN structure) and quantity (of training) plays big role.*
+*With GAN you have to be aware of mode collapse, where generator would output always one digit. From what I have found it's not clear why it happens, but the quality (of NN structure) and quantity (of training) plays big role.*
 
 
 ## **Note**
-I already done this project, but this time I added concvolution neural network. I think it have better result. Also I used google collabs, where they offer gpu for free (so I want thank them for that). That's reason this time the code is written in ipynb file. If you want check previous code, than go to "old_master branch".
+I already done this project, but this time I added concvolution neural network. I think it have better result. Also I used google colab, where they offer gpu for free (so I want thank them for that). That's reason this time the code is written in ipynb file. If you want check previous code, than go to "old_master branch".
