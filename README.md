@@ -9,7 +9,7 @@
 - Pandas
 - tqdm
 ----------------------------
-![GUI - gif](https://user-images.githubusercontent.com/57571014/88428244-d48dd280-cdf4-11ea-88bc-e1a913280540.gif)
+![GUI - gif](https://user-images.githubusercontent.com/57571014/88452952-2b31f580-ce63-11ea-8991-0527e451bab6.gif)
 
 ## **How CGAN works?**
 
